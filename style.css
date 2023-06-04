@@ -14,13 +14,18 @@ body {
   background-color: green;
 }
 
-.drag {
+.draggable {
   width: 90px;
   height: 90px;
   background-color: red;
   position: fixed;
-  cursor: pointer;
+  cursor: grab;
   -webkit-user-drag: none;
+}
+
+.dragging {
+  z-index: 2;
+  cursor: grabbing;
 }
 
 .board {

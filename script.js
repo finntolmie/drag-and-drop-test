@@ -1,3 +1,5 @@
+let json = {};
+
 let item = null;
 let x = 0;
 let y = 0;
@@ -14,10 +16,11 @@ function onGrab(e) {
 	x = e.offsetX;
 	y = e.offsetY;
 	item = e.target;
-	item.ondragstart = function () {
-		return false;
-	};
-	if (item.classList.contains("drag")) {
+	if (item.classList.contains("draggable")) {
+		item.ondragstart = function () {
+			return false;
+		};
+		item.classList.add("dragging");
 		window.addEventListener("mousemove", onDrag);
 		window.addEventListener("mouseup", onLetGo);
 	}
@@ -55,6 +58,7 @@ function onLetGo(e) {
 	let dy = parentBounds.top + row * itemBounds.height;
 	item.style.left = `${dx}px`;
 	item.style.top = `${dy}px`;
+	item.classList.remove("dragging");
 	window.removeEventListener("mousemove", onDrag);
 	window.removeEventListener("mouseup", onLetGo);
 }
