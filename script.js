@@ -3,10 +3,17 @@ let x = 0;
 let y = 0;
 
 function clampBounds(element, xPos, yPos) {
-	let bounds = element.getBoundingClientRect();
+	let elementBounds = element.getBoundingClientRect();
+	let itemBounds = item.getBoundingClientRect();
 	return [
-		Math.max(bounds.left, Math.min(xPos, bounds.right)),
-		Math.max(bounds.top, Math.min(yPos, bounds.bottom)),
+		Math.max(
+			elementBounds.left - itemBounds.width / 2,
+			Math.min(xPos, elementBounds.right - itemBounds.width / 2)
+		),
+		Math.max(
+			elementBounds.top - itemBounds.height / 2,
+			Math.min(yPos, elementBounds.bottom - itemBounds.height / 2)
+		),
 	];
 }
 
@@ -27,9 +34,13 @@ function onGrab(e) {
 function onDrag(e) {
 	if (item) {
 		let mouseX, mouseY;
-		[mouseX, mouseY] = clampBounds(item.parentElement, e.clientX, e.clientY);
-		let dx = mouseX - x;
-		let dy = mouseY - y;
+		[mouseX, mouseY] = clampBounds(
+			item.parentElement,
+			e.clientX - x,
+			e.clientY - y
+		);
+		let dx = mouseX;
+		let dy = mouseY;
 		item.style.left = `${dx}px`;
 		item.style.top = `${dy}px`;
 	}
