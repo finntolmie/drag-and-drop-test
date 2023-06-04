@@ -1,25 +1,37 @@
+console.log(document.querySelector(".bounds"));
+
 document.querySelectorAll(".drag").forEach((item) => {
 	let x = 0;
 	let y = 0;
 
+	function clampBounds(element, xPos, yPos) {
+		let bounds = element.getBoundingClientRect();
+		return [
+			Math.max(bounds.left, Math.min(xPos, bounds.right)),
+			Math.max(bounds.top, Math.min(yPos, bounds.bottom)),
+		];
+	}
+
 	function onDrag(e) {
-		let dx = e.clientX - x;
-		let dy = e.clientY - y;
-		item.style.transform = `translate(${dx}px, ${dy}px)`;
+		let mouseX, mouseY;
+		[mouseX, mouseY] = clampBounds(item.parentElement, e.clientX, e.clientY);
+		let dx = mouseX - x;
+		let dy = mouseY - y;
+		item.style.left = `${dx}px`;
+		item.style.top = `${dy}px`;
 	}
 
 	function onLetGo() {
 		item.removeEventListener("mousemove", onDrag);
-		item.removeEventListener("mouseup", onLetGo);
+		item.removeEventListener("pointerup", onLetGo);
 	}
 
 	function onGrab(e) {
-		console.log(e);
 		x = e.offsetX;
 		y = e.offsetY;
-		origin = item.addEventListener("mousemove", onDrag);
-		item.addEventListener("mouseup", onLetGo);
+		item.addEventListener("mousemove", onDrag);
+		item.addEventListener("pointerup", onLetGo);
 	}
 
-	item.addEventListener("mousedown", onGrab);
+	item.addEventListener("pointerdown", onGrab);
 });
