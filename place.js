@@ -1,16 +1,15 @@
-let arr = [0, 1, 2, 3, 4, 5, 6, 7, 63, 62, 61, 60, 59, 58, 57, 56];
+let arr = [
+	0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 48, 49, 50, 51, 52, 53,
+	54, 55, 56, 57, 58, 59, 60, 61, 62, 63,
+];
 let board = document.querySelector(".board");
 let boardBounds = board.getBoundingClientRect();
-console.log(board);
 arr.forEach((item) => {
 	let row = Math.floor(item / 8);
 	let col = item % 8;
-	let dx = boardBounds.left + col * (boardBounds.width / 8);
-	let dy = boardBounds.top + row * (boardBounds.height / 8);
 	let element = document.createElement("div");
 	element.classList.add("draggable");
-	element.style.left = `${dx}px`;
-	element.style.top = `${dy}px`;
+	element.style.transform = `translate(${col * 100}%, ${row * 100}%)`;
 	board.appendChild(element);
 });
 board.oncontextmenu = function () {

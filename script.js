@@ -1,25 +1,31 @@
 let item = null;
-let x = 0;
-let y = 0;
 
 function clampBounds(element, xPos, yPos) {
 	let elementBounds = element.getBoundingClientRect();
 	let itemBounds = item.getBoundingClientRect();
 	return [
 		Math.max(
-			elementBounds.left - itemBounds.width / 2,
-			Math.min(xPos, elementBounds.right - itemBounds.width / 2)
+			-50,
+			Math.min(
+				((xPos - itemBounds.width / 2 - elementBounds.left) /
+					elementBounds.width) *
+					800,
+				750
+			)
 		),
 		Math.max(
-			elementBounds.top - itemBounds.height / 2,
-			Math.min(yPos, elementBounds.bottom - itemBounds.height / 2)
+			-50,
+			Math.min(
+				((yPos - itemBounds.height / 2 - elementBounds.top) /
+					elementBounds.height) *
+					800,
+				750
+			)
 		),
 	];
 }
 
 function onGrab(e) {
-	x = e.offsetX;
-	y = e.offsetY;
 	if (e.target.classList.contains("draggable")) {
 		item = e.target;
 		item.ondragstart = function () {
@@ -34,15 +40,10 @@ function onGrab(e) {
 function onDrag(e) {
 	if (item) {
 		let mouseX, mouseY;
-		[mouseX, mouseY] = clampBounds(
-			item.parentElement,
-			e.clientX - x,
-			e.clientY - y
-		);
+		[mouseX, mouseY] = clampBounds(item.parentElement, e.clientX, e.clientY);
 		let dx = mouseX;
 		let dy = mouseY;
-		item.style.left = `${dx}px`;
-		item.style.top = `${dy}px`;
+		item.style.transform = `translate(${dx}%, ${dy}%)`;
 	}
 }
 
@@ -62,10 +63,7 @@ function onLetGo(e) {
 			7
 		)
 	);
-	let dx = parentBounds.left + col * (parentBounds.width / 8);
-	let dy = parentBounds.top + row * (parentBounds.height / 8);
-	item.style.left = `${dx}px`;
-	item.style.top = `${dy}px`;
+	item.style.transform = `translate(${col * 100}%, ${row * 100}%)`;
 	item.classList.remove("dragging");
 	window.removeEventListener("mousemove", onDrag);
 	window.removeEventListener("mouseup", onLetGo);
