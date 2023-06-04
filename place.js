@@ -13,3 +13,6 @@ arr.forEach((item) => {
 	element.style.top = `${dy}px`;
 	board.appendChild(element);
 });
+board.oncontextmenu = function () {
+	return false;
+};
