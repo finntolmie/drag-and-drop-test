@@ -20,8 +20,8 @@ function clampBounds(element, xPos, yPos) {
 function onGrab(e) {
 	x = e.offsetX;
 	y = e.offsetY;
-	item = e.target;
-	if (item.classList.contains("draggable")) {
+	if (e.target.classList.contains("draggable")) {
+		item = e.target;
 		item.ondragstart = function () {
 			return false;
 		};
