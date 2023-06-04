@@ -1,18 +1,28 @@
-console.log(document.querySelector(".bounds"));
+let item = null;
+let x = 0;
+let y = 0;
 
-document.querySelectorAll(".drag").forEach((item) => {
-	let x = 0;
-	let y = 0;
+function clampBounds(element, xPos, yPos) {
+	let bounds = element.getBoundingClientRect();
+	return [
+		Math.max(bounds.left, Math.min(xPos, bounds.right)),
+		Math.max(bounds.top, Math.min(yPos, bounds.bottom)),
+	];
+}
 
-	function clampBounds(element, xPos, yPos) {
-		let bounds = element.getBoundingClientRect();
-		return [
-			Math.max(bounds.left, Math.min(xPos, bounds.right)),
-			Math.max(bounds.top, Math.min(yPos, bounds.bottom)),
-		];
+function onGrab(e) {
+	x = e.offsetX;
+	y = e.offsetY;
+	item = e.target;
+	console.log(item.classList);
+	if (item.classList.contains("drag")) {
+		window.addEventListener("mousemove", onDrag);
+		window.addEventListener("mouseup", onLetGo);
 	}
+}
 
-	function onDrag(e) {
+function onDrag(e) {
+	if (item) {
 		let mouseX, mouseY;
 		[mouseX, mouseY] = clampBounds(item.parentElement, e.clientX, e.clientY);
 		let dx = mouseX - x;
@@ -20,18 +30,11 @@ document.querySelectorAll(".drag").forEach((item) => {
 		item.style.left = `${dx}px`;
 		item.style.top = `${dy}px`;
 	}
+}
 
-	function onLetGo() {
-		item.removeEventListener("mousemove", onDrag);
-		item.removeEventListener("pointerup", onLetGo);
-	}
+function onLetGo() {
+	window.removeEventListener("mousemove", onDrag);
+	window.removeEventListener("mouseup", onLetGo);
+}
 
-	function onGrab(e) {
-		x = e.offsetX;
-		y = e.offsetY;
-		item.addEventListener("mousemove", onDrag);
-		item.addEventListener("pointerup", onLetGo);
-	}
-
-	item.addEventListener("pointerdown", onGrab);
-});
+window.addEventListener("mousedown", onGrab);
