@@ -1,5 +1,3 @@
-let json = {};
-
 let item = null;
 let x = 0;
 let y = 0;
@@ -39,7 +37,6 @@ function onDrag(e) {
 
 function onLetGo(e) {
 	let parentBounds = item.parentElement.getBoundingClientRect();
-	let itemBounds = item.getBoundingClientRect();
 	let row = Math.max(
 		0,
 		Math.min(
@@ -54,8 +51,8 @@ function onLetGo(e) {
 			7
 		)
 	);
-	let dx = parentBounds.left + col * itemBounds.width;
-	let dy = parentBounds.top + row * itemBounds.height;
+	let dx = parentBounds.left + col * (parentBounds.width / 8);
+	let dy = parentBounds.top + row * (parentBounds.height / 8);
 	item.style.left = `${dx}px`;
 	item.style.top = `${dy}px`;
 	item.classList.remove("dragging");
