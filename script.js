@@ -14,7 +14,9 @@ function onGrab(e) {
 	x = e.offsetX;
 	y = e.offsetY;
 	item = e.target;
-	console.log(item.classList);
+	item.ondragstart = function () {
+		return false;
+	};
 	if (item.classList.contains("drag")) {
 		window.addEventListener("mousemove", onDrag);
 		window.addEventListener("mouseup", onLetGo);
@@ -32,7 +34,27 @@ function onDrag(e) {
 	}
 }
 
-function onLetGo() {
+function onLetGo(e) {
+	let parentBounds = item.parentElement.getBoundingClientRect();
+	let itemBounds = item.getBoundingClientRect();
+	let row = Math.max(
+		0,
+		Math.min(
+			Math.floor((e.clientY - parentBounds.top) / (parentBounds.height / 8)),
+			7
+		)
+	);
+	let col = Math.max(
+		0,
+		Math.min(
+			Math.floor((e.clientX - parentBounds.left) / (parentBounds.width / 8)),
+			7
+		)
+	);
+	let dx = parentBounds.left + col * itemBounds.width;
+	let dy = parentBounds.top + row * itemBounds.height;
+	item.style.left = `${dx}px`;
+	item.style.top = `${dy}px`;
 	window.removeEventListener("mousemove", onDrag);
 	window.removeEventListener("mouseup", onLetGo);
 }

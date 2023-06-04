@@ -11,19 +11,21 @@ body {
 }
 
 .bounds {
-  width: 80%;
-  height: 80%;
   background-color: green;
 }
 
 .drag {
-  min-width: 40px;
-  min-height: 40px;
-  max-width: 40px;
-  max-height: 40px;
+  width: 90px;
+  height: 90px;
   background-color: red;
   position: fixed;
   cursor: pointer;
-  padding: 5px;
-  margin: 5px;
+  -webkit-user-drag: none;
+}
+
+.board {
+  width: 720px;
+  height: 720px;
+  background-image: url('https://www.chess.com/boards/green/150.png');
+  background-size: contain;
 }
