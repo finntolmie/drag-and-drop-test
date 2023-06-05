@@ -9,6 +9,7 @@ arr.forEach((item) => {
 	let col = item % 8;
 	let element = document.createElement("div");
 	element.classList.add("draggable");
+	element.classList.add(`square-${col + 1}${8 - row}`);
 	element.style.transform = `translate(${col * 100}%, ${row * 100}%)`;
 	board.appendChild(element);
 });

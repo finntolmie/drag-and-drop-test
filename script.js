@@ -64,7 +64,17 @@ function onLetGo(e) {
 		)
 	);
 	item.style.transform = `translate(${col * 100}%, ${row * 100}%)`;
+	[].some.call(item.classList, (c) => {
+		if (/square-.*/.test(c)) {
+			item.classList.remove(c);
+		}
+	});
+	let newSquare = `square-${col + 1}${8 - row}`;
+	document.querySelectorAll(`.${newSquare}`).forEach((square) => {
+		square.remove();
+	});
 	item.classList.remove("dragging");
+	item.classList.add(newSquare);
 	window.removeEventListener("mousemove", onDrag);
 	window.removeEventListener("mouseup", onLetGo);
 }
