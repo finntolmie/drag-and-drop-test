@@ -6,12 +6,12 @@ function clamp(number, min, max) {
 	return Math.max(min, Math.min(number, max));
 }
 
-function translateSquare(element, dx, dy) {
+function translateItem(element, dx, dy) {
 	element.style.transform = `translate(${dx}%, ${dy}%)`;
 }
 
 function onGrab(e) {
-	if (e.target.classList.contains("draggable")) {
+	if (e.button == 0 && e.target.classList.contains("draggable")) {
 		item = e.target;
 		itemBounds = item.getBoundingClientRect();
 		parentBounds = item.parentElement.getBoundingClientRect();
@@ -40,7 +40,7 @@ function onDrag(e) {
 			-50,
 			750
 		);
-		translateSquare(item, dx, dy);
+		translateItem(item, dx, dy);
 	}
 }
 
@@ -56,7 +56,7 @@ function onLetGo(e) {
 		0,
 		7
 	);
-	translateSquare(item, col * 100, row * 100);
+	translateItem(item, col * 100, row * 100);
 
 	// remove old square class
 	[].some.call(item.classList, (c) => {
