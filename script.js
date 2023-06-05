@@ -95,7 +95,7 @@ function onLetGo(e) {
 	item.classList.remove("dragging");
 	item.classList.add(newSquare);
 
-	hover.style.visibility = "";
+	hover.style.visibility = "hidden";
 
 	// cleanup
 	window.removeEventListener("mousemove", onDrag);
